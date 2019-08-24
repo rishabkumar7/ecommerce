@@ -1,15 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { StoreInfoService } from "../store-info.service";
 
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.scss']
+  selector: "app-product",
+  templateUrl: "./product.component.html",
+  styleUrls: ["./product.component.scss"]
 })
 export class ProductComponent implements OnInit {
-
-  constructor() { }
+  index: number;
+  productInfo: any;
+  constructor(
+    private route: ActivatedRoute,
+    private storeInfo: StoreInfoService
+  ) {}
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.index = params["id"];
+      this.productInfo = this.storeInfo.tiles.reduce((obj, itm) => {
+        return +this.index == itm.id ? itm : obj;
+      });
+    });
   }
-
 }
